@@ -1,8 +1,14 @@
 {
-  "name": "use-firebase-auth",
+  "name": "@navarrotech/use-firebase-auth",
   "version": "0.0.1",
   "main": "dist/cjs/connect-firebase-auth.js",
-  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/navarrotech/use-firebase-auth"
+  },
+  "bugs": {
+    "url": "https://github.com/navarrotech/bulma-navarrotech/issues"
+  },
   "author": {
     "name": "Alex Navarro",
     "email": "alex@navarrotech.net"

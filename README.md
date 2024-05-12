@@ -1,6 +1,6 @@
 # Express Firebase Auth
 
-This package provides a simple and minimalistic Firebase authentication middleware designed for Express.js applications. It validates Firebase JWTs issued on the frontend, ensuring that backend services are secure and requests are authenticated. This is great for developers looking to implement Firebase authentication outside of Google Cloud environments. The goal be able to write custom Node.js logic without compromising on security. Whether you're developing a small project or a large-scale application, `use-firebase-auth` simplifies the integration of Firebase Auth with your server-side logic.
+This package provides a simple and minimalistic Firebase authentication middleware designed for Express.js applications. It validates Firebase JWTs issued on the frontend, ensuring that backend services are secure and requests are authenticated. This is great for developers looking to implement Firebase authentication outside of Google Cloud environments. The goal is to be able to write custom Node.js logic without compromising on security. Whether you're developing a small project or a large-scale application, `use-firebase-auth` simplifies the integration of Firebase Auth with your server-side logic.
 
 ## Installation
 ```bash
@@ -12,6 +12,23 @@ yarn add use-firebase-auth
 Once npm installed the module, you need to set up a bit on the frontend and backend.
 
 ## Backend implementation:
+
+### Short example:
+```bash
+import useFirebaseAuth, {
+    type SessionedRequest,
+    type UserSession
+} from "use-firebase-auth"
+
+// Middleware that uses the auth:
+app.use(
+    useFirebaseAuth({
+        firebaseApp
+    })
+)
+```
+
+### Full example:
 ```bash
 // Firebase Admin:
 import * as firebase from 'firebase-admin'
@@ -19,7 +36,10 @@ import credentials from "./firebase.json"
 
 // Express and middleware:
 import express from "express"
-import useFirebaseAuth, { type SessionedRequest, type UserSession } from "use-firebase-auth"
+import useFirebaseAuth, {
+    type SessionedRequest,
+    type UserSession
+} from "use-firebase-auth"
 
 const app = express()
 
@@ -54,6 +74,8 @@ app.listen(3001, () => {
 ```
 
 ## Frontend implementation
+It's important that you use the authorization header when sending requests your backend node server from your frontend like so:
+
 ```bash
 // Initialize your app like normal:
 const app = initializeApp({ /* Credentials */ })

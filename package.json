@@ -1,0 +1,39 @@
+{
+  "name": "use-firebase-auth",
+  "version": "0.0.1",
+  "main": "dist/cjs/connect-firebase-auth.js",
+  "private": false,
+  "author": {
+    "name": "Alex Navarro",
+    "email": "alex@navarrotech.net"
+  },
+  "description": "Express middleware for Firebase Authentication",
+  "exports": {
+    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.js"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node ./test/express.ts",
+    "dev": "yarn install && nodemon --legacy-watch --exec ts-node --transpile-only ./test/express.ts",
+    "serve-test": "serve -s ./test/index.html",
+    "check:tsc": "tsc --noEmit",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs/",
+    "build:esm": "tsc --module esnext --outDir dist/esm/",
+    "build": "npm run build:cjs && npm run build:esm"
+  },
+  "dependencies": {
+    "jwt-decode": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/express-session": "^1.18.0",
+    "@types/node": "^20.12.11",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "firebase-admin": "^12.1.0",
+    "nodemon": "^3.1.0",
+    "serve": "^14.2.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

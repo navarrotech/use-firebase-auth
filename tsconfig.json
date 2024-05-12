@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": [ "es6" ],
+    "target": "es6",
+
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    "esModuleInterop": true,
+  
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true
+  },
+  "files": [
+    "use-firebase-auth.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "firebase.ts",
+  ]
+}

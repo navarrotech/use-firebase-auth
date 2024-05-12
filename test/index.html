@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Test client</title>
+
+        <meta content="utf-8" http-equiv="encoding">
+        <meta name="viewport" content="initial-scale=1">
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+
+        <!-- Icon -->
+        <link rel="shortcut icon" href="/images" type="image/x-icon">
+        <link rel="icon" href="/images" type="image/x-icon">
+    </head>
+    <body>
+        <p id="status"></p>
+        <button id="sign_up">Sign up</button>
+        <button id="sign_in">Sign in</button>
+        <button id="sign_out">Sign out</button>
+        <button id="delete_user">Delete user</button>
+        <button id="fetch">Test HTTP request</button>
+
+        <script type="module">
+            import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js'
+            import {
+                getAuth,
+                setPersistence,
+                browserSessionPersistence,
+                createUserWithEmailAndPassword,
+                signInWithEmailAndPassword,
+                signOut
+            } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js'
+
+            const app = initializeApp({
+                apiKey: "",
+                authDomain: "",
+                databaseURL: "",
+                projectId: "",
+                storageBucket: "",
+                messagingSenderId: "",
+                appId: "",
+            })
+
+            const auth = getAuth(app)
+
+            // Set auth persistence to use browser session cookies (not required but nice for debugging)
+            setPersistence(auth, browserSessionPersistence).then(() => {
+                console.log('Persistence set to browser session (uses cookies)')
+            }).catch((error) => {
+                console.error('Failed to set persistence:', error)
+            });
+
+            const TEST_USERNAME = 'zesty@test.com'
+            const TEST_PASSWORD = 'U1DjYR663i'
+
+            const statusElement = document.getElementById('status')
+
+            document.getElementById('sign_up').onclick = () => {
+                createUserWithEmailAndPassword(auth, TEST_USERNAME, TEST_PASSWORD)
+                    .then((userCredential) => {
+                        const user = userCredential.user
+                        statusElement.textContent = `User ${user.email} created`
+                    })
+                    .catch((error) => {
+                        statusElement.textContent = `Error: ${error.message}`
+                    })
+            }
+
+            document.getElementById('sign_in').onclick = () => {
+                signInWithEmailAndPassword(auth, TEST_USERNAME, TEST_PASSWORD)
+                    .then((userCredential) => {
+                        const user = userCredential.user
+                        statusElement.textContent = `User ${user.email} signed in`
+                    })
+                    .catch((error) => {
+                        statusElement.textContent = `Error: ${error.message}`
+                    })
+            }
+
+            document.getElementById('sign_out').onclick = () => {
+                signOut(auth)
+                    .then(() => {
+                        statusElement.textContent = 'User signed out'
+                    })
+                    .catch((error) => {
+                        statusElement.textContent = `Error: ${error.message}`
+                    })
+            }
+
+            document.getElementById('delete_user').onclick = () => {
+                auth.currentUser.delete()
+                    .then(() => {
+                        statusElement.textContent = 'User deleted'
+                    })
+                    .catch((error) => {
+                        statusElement.textContent = `Error: ${error.message}`
+                    })
+            }
+
+            // When auth state changes, update the UI
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    statusElement.textContent = `User ${user.email} signed in`
+                } else {
+                    statusElement.textContent = 'User signed out'
+                }
+            })
+
+            async function TestFetch(){
+                const token = await auth?.currentUser?.getIdToken()
+
+                console.log("Authorization:", token)
+
+                const request = fetch('http://localhost:3001/hello', {
+                    body: "Hello world",
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                })
+            }
+
+            document.getElementById('fetch').onclick = TestFetch
+        </script>
+    </body>
+</html>
